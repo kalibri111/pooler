@@ -62,7 +62,25 @@ pgbouncer_SOURCES = \
 	include/common/unicode_combining_table.h \
 	include/common/unicode_norm.h \
 	include/common/unicode_norm_table.h \
-	include/common/uthash_lowercase.h
+	include/common/uthash_lowercase.h \
+	include/scheduler/stealing/queues/global.h \
+	include/scheduler/stealing/queues/threadlocal.h \
+	include/scheduler/stealing/coordinator.h \
+	include/scheduler/stealing/scheduler.h \
+	include/scheduler/stealing/task.h \
+	include/scheduler/stealing/worker.h \
+	include/scheduler/utils/list.h \
+	include/scheduler/utils/park.h \
+	include/scheduler/utils/waitgroup.h \
+	src/scheduler/stealing/queues/global.h \
+	src/scheduler/stealing/queues/threadlocal.h \
+	src/scheduler/stealing/coordinator.h \
+	src/scheduler/stealing/scheduler.h \
+	src/scheduler/stealing/task.h \
+	src/scheduler/stealing/worker.h \
+	src/scheduler/utils/list.h \
+	src/scheduler/utils/park.h \
+	src/scheduler/utils/waitgroup.h \
 
 UTHASH = uthash
 pgbouncer_CPPFLAGS = -Iinclude $(CARES_CFLAGS) $(LIBEVENT_CFLAGS) $(TLS_CPPFLAGS)

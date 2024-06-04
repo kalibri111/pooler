@@ -61,7 +61,8 @@ void WorkerJoin(Worker* self) {
  * Pick and starts available tasks via Runner
  */
 void WorkerWork(Worker* self) {
-    SchedulerTask* task = WorkerPickTask(self);
+    SchedulerTask* task = WorkerPickTask(self);  // TODO: pick client and push to thread local queue
+    // TODO: bouncer logic here
     while(task) {
         SchedulerTaskRun(task, self->runner);
 

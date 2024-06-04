@@ -20,6 +20,7 @@ typedef struct Scheduler {
     Coordinator* coordinator;
     size_t nThreads;
     Worker* workers;
+    // TODO: client to worker
     WaitGroup* workersCount;
 
     /* Need to check submitter to determine local or external push */

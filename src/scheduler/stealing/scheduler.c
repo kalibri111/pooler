@@ -28,6 +28,7 @@ void SchedulerStart(Scheduler* self) {
  * Submit new task. Current restriction: only one Scheduler allowed
 */
 void SchedulerSubmit(Scheduler* self, SchedulerTask* task) {
+    // TODO: try to push directly to worker if present
     GlobalQueuePushOne(self->globalTasks, task);
     CoordinatorNotifyNewTask(self->coordinator);
 }
