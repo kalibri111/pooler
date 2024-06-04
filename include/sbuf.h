@@ -90,6 +90,8 @@ struct SBuf {
 	const SBufIO *ops;	/* normal vs. TLS */
 	struct tls *tls;	/* TLS context */
 	const char *tls_host;	/* target hostname */
+
+	bool scheduled; /* scheduled to coordinator */
 };
 
 #define sbuf_socket(sbuf) ((sbuf)->sock)

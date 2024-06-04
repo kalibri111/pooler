@@ -1346,6 +1346,13 @@ bool client_proto(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 	Assert(client->sbuf.sock);
 	Assert(client->state != CL_FREE);
 
+	if (!sbuf->scheduled)
+	{
+		sbuf->scheduled = true;
+		client_proto_coordinator(sbuf, evtype, data);
+	}
+	
+
 	/* may happen if close failed */
 	if (client->state == CL_JUSTFREE)
 		return false;
@@ -1494,4 +1501,19 @@ bool client_proto(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 		break;
 	}
 	return res;
+}
+
+/* forward packet to coordinator */
+void client_proto_coordinator(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
+{
+	bool res = false;
+	PgSocket *client = container_of(sbuf, PgSocket, sbuf);
+	PktHdr pkt;
+
+
+	Assert(!is_server_socket(client));
+	Assert(client->sbuf.sock);
+	Assert(client->state != CL_FREE);
+
+	// TODO: pass to coordinator
 }
