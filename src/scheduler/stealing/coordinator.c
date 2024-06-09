@@ -1,4 +1,4 @@
-#include "coordinator.h"
+#include "scheduler/stealing/coordinator.h"
 
 Coordinator* CoordinatorNew(size_t nThreads) {
     Coordinator* coordinator = (Coordinator*)calloc(1, sizeof(Coordinator));

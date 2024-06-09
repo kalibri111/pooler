@@ -3,8 +3,12 @@
  */
 #pragma once
 
-#include <linux/futex.h>      /* Definition of FUTEX_* constants */
-#include <sys/syscall.h>      /* Definition of SYS_* constants */
+#ifdef __APPLE__
+// TODO
+#else
+#include <linux/futex.h>
+#endif
+#include <sys/syscall.h>
 #include <unistd.h>
 #include <stdatomic.h>
 #include <errno.h>

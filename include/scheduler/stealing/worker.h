@@ -9,7 +9,7 @@
 
 #include "queues/threadlocal.h"
 #include "task.h"
-#include "park.h"
+#include "scheduler/utils/park.h"
 
 
 #ifndef SCHED_WORKER_H
@@ -102,6 +102,8 @@ void WorkerPush(Worker* self, SchedulerTask* task); // +
  * Worker parks in case of ... TODO
  */
 void WorkerWake(Worker* self);  // +
+
+void WorkerPgBouncerLoop(void* pktWrapper);
 
 /* private */
 

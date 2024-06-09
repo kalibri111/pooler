@@ -72,15 +72,17 @@ pgbouncer_SOURCES = \
 	include/scheduler/utils/list.h \
 	include/scheduler/utils/park.h \
 	include/scheduler/utils/waitgroup.h \
-	src/scheduler/stealing/queues/global.h \
-	src/scheduler/stealing/queues/threadlocal.h \
-	src/scheduler/stealing/coordinator.h \
-	src/scheduler/stealing/scheduler.h \
-	src/scheduler/stealing/task.h \
-	src/scheduler/stealing/worker.h \
-	src/scheduler/utils/list.h \
-	src/scheduler/utils/park.h \
-	src/scheduler/utils/waitgroup.h \
+	include/scheduler/utils/addr_map.h \
+	src/scheduler/stealing/queues/global.c \
+	src/scheduler/stealing/queues/threadlocal.c \
+	src/scheduler/stealing/coordinator.c \
+	src/scheduler/stealing/scheduler.c \
+	src/scheduler/stealing/task.c \
+	src/scheduler/stealing/worker.c \
+	src/scheduler/utils/list.c \
+	src/scheduler/utils/park.c \
+	src/scheduler/utils/waitgroup.c \
+	src/scheduler/utils/addr_map.c\
 
 UTHASH = uthash
 pgbouncer_CPPFLAGS = -Iinclude $(CARES_CFLAGS) $(LIBEVENT_CFLAGS) $(TLS_CPPFLAGS)

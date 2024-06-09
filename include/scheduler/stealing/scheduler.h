@@ -2,11 +2,13 @@
  * Scalable work-stealing scheduler
  */
 
-#include "queues/global.h"
-#include "queues/threadlocal.h"
-#include "coordinator.h"
-#include "worker.h"
-#include "waitgroup.h"
+#include "scheduler/stealing/queues/global.h"
+#include "scheduler/stealing/queues/threadlocal.h"
+#include "scheduler/stealing/coordinator.h"
+#include "scheduler/stealing/worker.h"
+#include "scheduler/utils/waitgroup.h"
+#include "scheduler/utils/addr_map.h"
+#include "scheduler/utils/addr_map.h"
 
 #ifndef SCHED_SCHEDULER_H
 #define SCHED_SCHEDULER_H
@@ -20,8 +22,8 @@ typedef struct Scheduler {
     Coordinator* coordinator;
     size_t nThreads;
     Worker* workers;
-    // TODO: client to worker
     WaitGroup* workersCount;
+    AddrMap clientToWorker;
 
     /* Need to check submitter to determine local or external push */
     // pthread_key_t threadLocalWorker;  // current execution worker

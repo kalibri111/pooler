@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include "global.h"
+#include "scheduler/stealing/queues/global.h"
 
 #ifndef SCHED_GLOBAL_C
 #define SCHED_GLOBAL_C
 
 
-GlobalQueue* GlobalQueueNew() {
+GlobalQueue* GlobalQueueNew(void) {
     GlobalQueue* queue = (GlobalQueue*)calloc(1, sizeof(GlobalQueue));
 
     pthread_mutex_init(&queue->mutex, NULL);

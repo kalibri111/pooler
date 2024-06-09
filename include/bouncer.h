@@ -19,7 +19,7 @@
 /*
  * core structures
  */
-
+#pragma once
 #include "system.h"
 
 #include <usual/cfparser.h>
@@ -56,6 +56,8 @@
 #define sd_notifyf(ue, f, ...)
 #endif
 
+// TODO: config param
+#define N_WORKERS 8
 
 /* global libevent handle */
 extern struct event_base *pgb_event_base;

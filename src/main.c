@@ -31,6 +31,8 @@
 #include <usual/socket.h>
 #include <usual/string.h>
 
+#include "scheduler/stealing/scheduler.h"
+
 #ifdef WIN32
 #include "win32support.h"
 #endif
@@ -1077,9 +1079,13 @@ int main(int argc, char *argv[])
 
 	sd_notify(0, "READY=1");
 
+    Scheduler* scheduler = SchedulerNew(N_WORKERS, WorkerPgBouncerLoop);
+
+    SchedulerStart(scheduler);
+
 	/* main loop */
-	while (cf_shutdown != SHUTDOWN_IMMEDIATE)
-		main_loop_once();
+//	while (cf_shutdown != SHUTDOWN_IMMEDIATE)
+//		main_loop_once();
 
 	return 0;
 }

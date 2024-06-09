@@ -18,7 +18,9 @@ typedef struct IntrusiveList IntrusiveLinkedList;
 
 // interface
 
-IntrusiveList* IntrusiveListNew();
+IntrusiveList* IntrusiveListNew(void);
+
+void IntrusiveListDelete(IntrusiveList* self);
 
 void IntrusiveListPushBack(IntrusiveList* self, void* node);
 
@@ -54,30 +56,10 @@ bool IntrusiveNodeIsLinked(IntrusiveNode* node);
 
 void IntrusiveNodeUnlink(IntrusiveNode* node);
 
-/* Intrusive list */
-
-IntrusiveList* IntrusiveListNew();
-
-void IntrusiveListDelete(IntrusiveList* self);
-
-void IntrusiveListPushBack(IntrusiveList* self, void* node);
-
-void IntrusiveListPushFront(IntrusiveList* self, void* node);
-
-void* IntrusiveListPopFront(IntrusiveList* self);
-
-size_t IntrusiveListSize(IntrusiveList* self);
-
-bool IntrusiveListIsEmpty(IntrusiveList* self);
-
-/**
- * Other will be invalidated
- */
-void IntrusiveListConcat(IntrusiveList* self, IntrusiveList* other);
 
 /* Intrusive linked list */
 
-IntrusiveLinkedList* IntrusiveLinkedListNew();
+IntrusiveLinkedList* IntrusiveLinkedListNew(void);
 
 void IntrusiveLinkedListDelete(IntrusiveLinkedList* self);
 

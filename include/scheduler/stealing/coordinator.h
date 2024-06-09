@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <pthread.h>
 
-#include "list.h"
-#include "worker.h"
+#include "scheduler/utils/list.h"
+#include "scheduler/stealing/worker.h"
 
 #ifndef SCHED_COORDINATOR_H
 #define SCHED_COORDINATOR_H

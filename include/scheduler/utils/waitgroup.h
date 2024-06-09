@@ -11,7 +11,7 @@ typedef struct WaitGroup {
     pthread_cond_t isIdle;
 } WaitGroup;
 
-WaitGroup* WaitGroupNew();
+WaitGroup* WaitGroupNew(void);
 
 void WaitGroupDelete(WaitGroup* self);
 

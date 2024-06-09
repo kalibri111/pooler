@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "threadlocal.h"
+#include "scheduler/stealing/queues/threadlocal.h"
 
 #define THREAD_LOCAL_QUEUE_CAPACITY 100
 

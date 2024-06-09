@@ -27,6 +27,8 @@
 #include <usual/pgutil.h>
 #include <usual/slab.h>
 
+#include "scheduler/stealing/scheduler.h"
+
 static const char *hdr2hex(const struct MBuf *data, char *buf, unsigned buflen)
 {
 	const uint8_t *bin = data->data + data->read_pos;
@@ -1504,7 +1506,7 @@ bool client_proto(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 }
 
 /* forward packet to coordinator */
-void client_proto_coordinator(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
+bool client_proto_coordinator(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 {
 	bool res = false;
 	PgSocket *client = container_of(sbuf, PgSocket, sbuf);
@@ -1515,5 +1517,10 @@ void client_proto_coordinator(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 	Assert(client->sbuf.sock);
 	Assert(client->state != CL_FREE);
 
-	// TODO: pass to coordinator
+    // will be freed in WorkerWork
+    PgPacketWrapper* wrap = PgPacketWrapperNew(sbuf, evtype, data);
+
+    SchedulerSubmit(NULL, wrap);
+
+    return true;
 }

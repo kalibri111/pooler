@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "list.h"
+#include "scheduler/utils/list.h"
 
 /* Intrusive node */
 
@@ -22,7 +22,7 @@ void IntrusiveNodeUnlink(IntrusiveNode* node) {
 
 /* Intrusive list */
 
-IntrusiveList* IntrusiveListNew() {
+IntrusiveList* IntrusiveListNew(void) {
     IntrusiveList* list = (IntrusiveList*)calloc(1, sizeof(IntrusiveList));
     list->head = NULL;
     list->tail = NULL;
@@ -132,24 +132,6 @@ void IntrusiveListConcat(IntrusiveList* self, IntrusiveList* other) {
     other->tail = NULL;
     other->size = 0;
 }
-
-/* Intrusive linked list */
-IntrusiveLinkedList* IntrusiveLinkedListNew();
-
-void IntrusiveLinkedListDelete(IntrusiveLinkedList* self);
-
-void IntrusiveLinkedListPushBack(IntrusiveLinkedList* self, void* node);
-
-void IntrusiveLinkedListPushFront(IntrusiveLinkedList* self, void* node);
-
-void* IntrusiveLinkedListPopFront(IntrusiveLinkedList* self);
-
-void* IntrusiveLinkedListPopBack(IntrusiveLinkedList* self);
-
-size_t IntrusiveLinkedListSize(IntrusiveLinkedList* self);
-
-bool IntrusiveLinkedListIsEmpty(IntrusiveLinkedList* self);
-
 
 // -----------------------------------
 

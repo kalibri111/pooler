@@ -1,6 +1,9 @@
-#include "park.h"
+#include "scheduler/utils/park.h"
 
 void futex_wait(uint32_t* futex_addr, size_t val) {
+#ifdef __APPLE__
+// TODO
+#else
     while (1) {
         int64_t futex_rc = syscall(SYS_futex, futex_addr, FUTEX_WAIT, val, NULL, NULL, NULL);
 
@@ -17,9 +20,13 @@ void futex_wait(uint32_t* futex_addr, size_t val) {
             abort();
         }
     }
+#endif
 }
 
 void futex_wake(uint32_t* futex_addr) {
+#ifdef __APPLE__
+    // TODO
+#else
     while (1) {
         int64_t futex_rc = syscall(SYS_futex, futex_addr, FUTEX_WAKE, 1, NULL, NULL, NULL);
         if (futex_rc == -1) {
@@ -29,6 +36,7 @@ void futex_wake(uint32_t* futex_addr) {
             return;
         }
     }
+#endif
 }
 
 void ParkWait(Park* self, size_t old) {

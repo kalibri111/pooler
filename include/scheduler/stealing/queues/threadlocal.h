@@ -20,7 +20,7 @@
 #include <stdbool.h>
 #include <stdatomic.h>
 
-#include "task.h"
+#include "scheduler/stealing/task.h"
 
 #define THREAD_LOCAL_QUEUE_CAPACITY 100
 

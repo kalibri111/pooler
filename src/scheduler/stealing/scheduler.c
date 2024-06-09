@@ -1,4 +1,5 @@
-#include "scheduler.h"
+#include "scheduler/stealing/scheduler.h"
+#include "bouncer.h"
 
 Scheduler* SchedulerNew(size_t nWorkers, void(*runner)(void*)) {
     Scheduler* sched = (Scheduler*)calloc(1, sizeof(Scheduler));
@@ -9,6 +10,8 @@ Scheduler* SchedulerNew(size_t nWorkers, void(*runner)(void*)) {
     sched->globalTasks = GlobalQueueNew();
     sched->workersCount = WaitGroupNew();
     sched->workers = WorkerPack(sched, nWorkers, runner);
+
+    AddrMapInit(&sched->clientToWorker);
 
     // pthread_key_create(&sched->threadLocalWorker, NULL);
 
@@ -28,7 +31,15 @@ void SchedulerStart(Scheduler* self) {
  * Submit new task. Current restriction: only one Scheduler allowed
 */
 void SchedulerSubmit(Scheduler* self, SchedulerTask* task) {
-    // TODO: try to push directly to worker if present
+    uintptr_t clientPtr = (uintptr_t)task->task;  // PgSocket*
+
+    // clients request routed to his worker
+    Worker* dst = AddrMapGetWorker(&self->clientToWorker, clientPtr);
+    if (dst) {
+        ThreadLocalQueueTryPush(&dst->localQueue, task);
+        return;
+    }
+
     GlobalQueuePushOne(self->globalTasks, task);
     CoordinatorNotifyNewTask(self->coordinator);
 }

@@ -1,5 +1,5 @@
-#include "worker.h"
-#include "scheduler.h"
+#include "scheduler/stealing/worker.h"
+#include "scheduler/stealing/scheduler.h"
 
 #ifndef SCHED_WORKER_C
 #define SCHED_WORKER_C
@@ -61,16 +61,40 @@ void WorkerJoin(Worker* self) {
  * Pick and starts available tasks via Runner
  */
 void WorkerWork(Worker* self) {
-    SchedulerTask* task = WorkerPickTask(self);  // TODO: pick client and push to thread local queue
+    SchedulerTask* task;
+      // TODO: pick client and push to thread local queue
     // TODO: bouncer logic here
-    while(task) {
-        SchedulerTaskRun(task, self->runner);
 
+    while (cf_shutdown != SHUTDOWN_IMMEDIATE) {
         task = WorkerPickTask(self);
-        printf("do task %p\n", task);
-        fflush(stdout);
+        PgPacketWrapper* wrapper = (PgPacketWrapper*)task->task;
+        SBuf *sbuf = wrapper->sbuf;
+        SBufEvent evtype = wrapper->evtype;
+        struct MBuf *data = wrapper->data;
+
+        client_proto(sbuf, evtype, data);
+
+        reset_time_cache();
+        pam_poll();
+        per_loop_maint();
+        reuse_just_freed_objects();
+        rescue_timers();
+
+        if (adns)
+            adns_per_loop(adns);
     }
+
     WorkerStop(self);
+}
+
+void WorkerPgBouncerLoop(void* pktWrapper) {
+    PgPacketWrapper* wrapper = (PgPacketWrapper*)pktWrapper;
+    SBuf *sbuf = wrapper->sbuf;
+    SBufEvent evtype = wrapper->evtype;
+    struct MBuf *data = wrapper->data;
+
+//    TODO: schedule pktWrapper
+
 }
 
 void* workerPthreadWork(void* arg) {

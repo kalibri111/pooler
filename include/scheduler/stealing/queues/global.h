@@ -15,8 +15,8 @@
 
 #include <pthread.h>
 
-#include "list.h"
-#include "task.h"
+#include "scheduler/utils/list.h"
+#include "scheduler/stealing/task.h"
 
 #ifndef SCHED_GLOBAL_H
 #define SCHED_GLOBAL_H
@@ -31,7 +31,7 @@ struct GlobalQueue {
 };
 
 // methods
-GlobalQueue* GlobalQueueNew();
+GlobalQueue* GlobalQueueNew(void);
 
 void GlobalQueueDelete(GlobalQueue* self);
 

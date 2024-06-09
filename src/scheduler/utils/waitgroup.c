@@ -1,6 +1,6 @@
-#include "waitgroup.h"
+#include "scheduler/utils/waitgroup.h"
 
-WaitGroup* WaitGroupNew() {
+WaitGroup* WaitGroupNew(void) {
     WaitGroup* wg = (WaitGroup*)calloc(1, sizeof(WaitGroup));
     wg->count = 0;
     pthread_mutex_init(&wg->mutex, NULL);

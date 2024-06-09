@@ -1,4 +1,5 @@
-#include "list.h"
+#include "scheduler/utils/list.h"
+#include "bouncer.h"
 #include <stdbool.h>
 #include <stdatomic.h>
 
@@ -6,18 +7,32 @@
 #define SCHED_TASK_HPP
 extern _Atomic int counter;
 /* Task */
+typedef struct PgPacketWrapper {
+    SBuf *sbuf;
+    SBufEvent evtype;
+    struct MBuf *data;
+} PgPacketWrapper;
+
+// lifetime: from allocation in client_proto_coordinator to delete unpacking in WorkerWork
+// TODO: possibly may avoid this allocation
+PgPacketWrapper* PgPacketWrapperNew(SBuf *sbuf, SBufEvent evtype, struct MBuf *data);
+void PgPacketWrapperDelete(PgPacketWrapper* self);
+
 
 typedef struct SchedulerTask {
     IntrusiveNode node;
     bool externalTask;
-    void* task;  // coroutine
+    void* task;  // client
 } SchedulerTask;
+
+SchedulerTask* SchedulerTaskNew(SBuf *sbuf, SBufEvent evtype, struct MBuf *data);
+void SchedulerTaskDelete(SchedulerTask* self);
 
 void SchedulerTaskRun(SchedulerTask* self, void(*runner)(void*));
 
-void initTestRunner();
+void initTestRunner(void);
 
-int testResult();
+int testResult(void);
 
 void testRunner(void* arg);
 
