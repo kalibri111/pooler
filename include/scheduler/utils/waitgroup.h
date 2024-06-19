@@ -5,6 +5,8 @@
 #include <memory.h>
 #include <stdlib.h>
 
+#pragma once
+
 typedef struct WaitGroup {
     _Atomic size_t count;
     pthread_mutex_t mutex;

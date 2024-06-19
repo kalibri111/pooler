@@ -130,6 +130,7 @@ UTHASH_DIST = $(UTHASH)/src/uthash.h \
               $(UTHASH)/LICENSE
 
 pgbouncer_LDFLAGS := $(TLS_LDFLAGS)
+pgbouncer_LDFLAGS += -pthread
 pgbouncer_LDADD := $(CARES_LIBS) $(LIBEVENT_LIBS) $(TLS_LIBS) $(LIBS)
 LIBS :=
 

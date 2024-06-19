@@ -1,6 +1,8 @@
 /**
  * Scalable work-stealing scheduler
  */
+#ifndef SCHED_SCHEDULER_H
+#define SCHED_SCHEDULER_H
 
 #include "scheduler/stealing/queues/global.h"
 #include "scheduler/stealing/queues/threadlocal.h"
@@ -9,9 +11,6 @@
 #include "scheduler/utils/waitgroup.h"
 #include "scheduler/utils/addr_map.h"
 #include "scheduler/utils/addr_map.h"
-
-#ifndef SCHED_SCHEDULER_H
-#define SCHED_SCHEDULER_H
 
 typedef struct Scheduler {
     // global queue with contention
@@ -30,6 +29,8 @@ typedef struct Scheduler {
 } Scheduler;
 
 typedef void(*Runner)(void*);
+
+extern Scheduler* scheduler;
 
 Scheduler* SchedulerNew(size_t nWorkers, Runner);
 

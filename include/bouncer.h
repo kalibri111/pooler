@@ -57,7 +57,7 @@
 #endif
 
 // TODO: config param
-#define N_WORKERS 8
+#define N_WORKERS 1
 
 /* global libevent handle */
 extern struct event_base *pgb_event_base;
@@ -681,6 +681,12 @@ struct PgSocket {
 
 	SBuf sbuf;		/* stream buffer, must be last */
 };
+
+typedef struct PgPacketWrapper {
+    SBuf *sbuf;
+    SBufEvent evtype;
+    struct MBuf *data;
+} PgPacketWrapper;
 
 #define RAW_IOBUF_SIZE  offsetof(IOBuf, buf)
 #define IOBUF_SIZE      (RAW_IOBUF_SIZE + cf_sbuf_len)

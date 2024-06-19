@@ -3,15 +3,10 @@
 #include <stdbool.h>
 #include <stdatomic.h>
 
-#ifndef SCHED_TASK_HPP
-#define SCHED_TASK_HPP
+#pragma once
+
 extern _Atomic int counter;
 /* Task */
-typedef struct PgPacketWrapper {
-    SBuf *sbuf;
-    SBufEvent evtype;
-    struct MBuf *data;
-} PgPacketWrapper;
 
 // lifetime: from allocation in client_proto_coordinator to delete unpacking in WorkerWork
 // TODO: possibly may avoid this allocation
@@ -54,5 +49,3 @@ size_t ArrayViewLength(ArrayView* self);
 
 void ArrayViewReindex(ArrayView* self, size_t shift);
 
-
-#endif //SCHED_TASK_HPP

@@ -17,7 +17,6 @@
  */
 
 #include <usual/mbuf.h>
-
 /*
  * event types for protocol handler
  */

@@ -121,16 +121,13 @@ size_t ThreadLocalQueueTryMultiPop(ThreadLocalQueue* self, /*ArrayView<Scheduler
         fflush(stdout);
 
         for (size_t i = 0; i < popCount; i++) {
-            // TODO: prettify
             *(SchedulerTask*)ArrayViewAt(to, i) = *atomic_load(&self->ringBuffer[ThreadLocalQueueRingIndex(i)].task);
         }
 
         if (atomic_compare_exchange_weak(&self->head, &currentHead, currentHead + popCount)) {
             return popCount;
         }
-        
     }
-    
 }
 
 size_t ThreadLocalQueueSizeAtMost(ThreadLocalQueue* self) {

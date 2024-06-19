@@ -18,6 +18,8 @@
 
 #include <usual/mbuf.h>
 
+#pragma once
+
 /*
  * Temporary buffer for single i/o.
  *

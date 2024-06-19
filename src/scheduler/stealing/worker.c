@@ -67,6 +67,8 @@ void WorkerWork(Worker* self) {
 
     while (cf_shutdown != SHUTDOWN_IMMEDIATE) {
         task = WorkerPickTask(self);
+        if (!task)
+            continue;
         PgPacketWrapper* wrapper = (PgPacketWrapper*)task->task;
         SBuf *sbuf = wrapper->sbuf;
         SBufEvent evtype = wrapper->evtype;
@@ -191,6 +193,9 @@ SchedulerTask* WorkerPickTask(Worker* self) {
 
         /* Waken up */
         WaitGroupAdd(self->host->workersCount, 1);
+
+        printf("waken up\n");
+        fflush(stdout);
     }
 
     return NULL;

@@ -1,4 +1,5 @@
 #include "scheduler/utils/waitgroup.h"
+#include <stdio.h>
 
 WaitGroup* WaitGroupNew(void) {
     WaitGroup* wg = (WaitGroup*)calloc(1, sizeof(WaitGroup));
@@ -19,6 +20,8 @@ void WaitGroupAdd(WaitGroup* self, size_t count) {
 }
 
 void WaitGroupDone(WaitGroup* self, size_t count) {
+    printf("done notify\n");
+    fflush(stdout);
     // if all done
     if (atomic_fetch_sub(&self->count, count) == count) {
         pthread_mutex_lock(&self->mutex);
@@ -31,9 +34,14 @@ void WaitGroupDone(WaitGroup* self, size_t count) {
 void WaitGroupWaitIdle(WaitGroup* self) {
     pthread_mutex_lock(&self->mutex);
 
+    printf("waiting for done: %d remaining\n", self->count);
+    fflush(stdout);
     while (atomic_load(&self->count) > 0) {
         pthread_cond_wait(&self->isIdle, &self->mutex);
     }
+
+    printf("all workers done...\n");
+    fflush(stdout);
 
     pthread_mutex_unlock(&self->mutex);
 }

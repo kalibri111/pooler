@@ -28,7 +28,11 @@ void futex_wake(uint32_t* futex_addr) {
     // TODO
 #else
     while (1) {
+        printf("futex wait\n");
+        fflush(stdout);
         int64_t futex_rc = syscall(SYS_futex, futex_addr, FUTEX_WAKE, 1, NULL, NULL, NULL);
+        printf("futex wake\n");
+        fflush(stdout);
         if (futex_rc == -1) {
             perror("futex wake failures");
             exit(1);

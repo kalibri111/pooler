@@ -194,6 +194,8 @@ char *cf_server_tls_ciphers;
 
 int cf_max_prepared_statements;
 
+Scheduler* scheduler;
+
 /*
  * config file description
  */
@@ -1079,13 +1081,19 @@ int main(int argc, char *argv[])
 
 	sd_notify(0, "READY=1");
 
-    Scheduler* scheduler = SchedulerNew(N_WORKERS, WorkerPgBouncerLoop);
+    scheduler = SchedulerNew(N_WORKERS, WorkerPgBouncerLoop);
 
     SchedulerStart(scheduler);
 
+    while (cf_shutdown != SHUTDOWN_IMMEDIATE)
+        main_loop_once();
+
+    SchedulerStop(scheduler);
+
+    log_info("execution stopped");
+
 	/* main loop */
-//	while (cf_shutdown != SHUTDOWN_IMMEDIATE)
-//		main_loop_once();
+
 
 	return 0;
 }

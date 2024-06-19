@@ -1340,6 +1340,7 @@ static bool handle_client_work(PgSocket *client, PktHdr *pkt)
 bool client_proto(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 {
 	bool res = false;
+    bool scheduled = false;
 	PgSocket *client = container_of(sbuf, PgSocket, sbuf);
 	PktHdr pkt;
 
@@ -1351,7 +1352,14 @@ bool client_proto(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
 	if (!sbuf->scheduled)
 	{
 		sbuf->scheduled = true;
-		client_proto_coordinator(sbuf, evtype, data);
+		scheduled = client_proto_coordinator(sbuf, evtype, data);
+
+        if (!scheduled) {
+            log_error("scheduling failure");
+            return false;
+        }
+
+        return true;
 	}
 	
 
@@ -1520,7 +1528,12 @@ bool client_proto_coordinator(SBuf *sbuf, SBufEvent evtype, struct MBuf *data)
     // will be freed in WorkerWork
     PgPacketWrapper* wrap = PgPacketWrapperNew(sbuf, evtype, data);
 
-    SchedulerSubmit(NULL, wrap);
+    if (!scheduler) {
+        log_error("scheduler does not initialized");
+        return false;
+    }
+
+    SchedulerSubmit(scheduler, wrap);
 
     return true;
 }
